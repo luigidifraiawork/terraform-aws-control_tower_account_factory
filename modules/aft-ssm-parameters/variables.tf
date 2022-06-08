@@ -134,6 +134,10 @@ variable "terraform_token" {
   sensitive = true
 }
 
+variable "terraform_org_name" {
+  type = string
+}
+
 variable "account_request_repo_name" {
   type = string
 }
@@ -147,10 +151,6 @@ variable "account_provisioning_customizations_repo_name" {
 }
 
 variable "account_provisioning_customizations_repo_branch" {
-  type = string
-}
-
-variable "terraform_org_name" {
   type = string
 }
 

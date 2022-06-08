@@ -42,6 +42,20 @@ resource "aws_iam_role_policy" "aft_codebuild_customizations_policy" {
   })
 }
 
+resource "aws_iam_role_policy" "terraform_oss_backend_codebuild_customizations_policy" {
+  count = var.terraform_distribution == "oss" ? 1 : 0
+  name  = "ct-aft-codebuild-customizations-terraform-oss-backend-policy"
+  role  = aws_iam_role.aft_codebuild_customizations_role.id
+
+  policy = templatefile("${path.module}/iam/role-policies/ct_aft_codebuild_oss_backend_policy.tpl", {
+    data_aws_region_current_name                      = data.aws_region.current.name
+    data_aws_caller_identity_current_account_id       = data.aws_caller_identity.current.account_id
+    data_aws_dynamo_terraform_oss_backend_table       = var.aft_config_backend_table_id
+    aws_s3_bucket_aft_terraform_oss_backend_bucket_id = var.aft_config_backend_bucket_id
+    aws_s3_bucket_aft_terraform_oss_kms_key_id        = var.aft_config_backend_kms_key_id
+  })
+}
+
 ###################################################################
 # Step Functions - Invoke Customizations
 ###################################################################
@@ -148,20 +162,6 @@ resource "aws_iam_role_policy_attachment" "aft_get_pipeline_executions_lambda" {
   count      = length(local.lambda_managed_policies)
   role       = aws_iam_role.aft_customizations_get_pipeline_executions_lambda.name
   policy_arn = local.lambda_managed_policies[count.index]
-}
-
-resource "aws_iam_role_policy" "terraform_oss_backend_codebuild_customizations_policy" {
-  count = var.terraform_distribution == "oss" ? 1 : 0
-  name  = "ct-aft-codebuild-customizations-terraform-oss-backend-policy"
-  role  = aws_iam_role.aft_codebuild_customizations_role.id
-
-  policy = templatefile("${path.module}/iam/role-policies/ct_aft_codebuild_oss_backend_policy.tpl", {
-    data_aws_region_current_name                      = data.aws_region.current.name
-    data_aws_caller_identity_current_account_id       = data.aws_caller_identity.current.account_id
-    data_aws_dynamo_terraform_oss_backend_table       = var.aft_config_backend_table_id
-    aws_s3_bucket_aft_terraform_oss_backend_bucket_id = var.aft_config_backend_bucket_id
-    aws_s3_bucket_aft_terraform_oss_kms_key_id        = var.aft_config_backend_kms_key_id
-  })
 }
 
 ###################################################################
