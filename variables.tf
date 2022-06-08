@@ -147,7 +147,6 @@ variable "aft_feature_delete_default_vpcs_enabled" {
 # AFT Customer VCS Variables
 #########################################
 
-
 variable "vcs_provider" {
   description = "Customer VCS Provider - valid inputs are codecommit, bitbucket, github, or githubenterprise"
   type        = string

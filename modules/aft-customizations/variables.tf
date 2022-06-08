@@ -1,26 +1,11 @@
 # Copyright Amazon.com, Inc. or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
-variable "aft_config_backend_kms_key_id" {
-  type = string
-}
-
 variable "aft_kms_key_id" {
   type = string
 }
 
-
-
 variable "aft_kms_key_arn" {
-
-
-
-
-
-
-
-
-
   type = string
 }
 
@@ -85,6 +70,10 @@ variable "aft_config_backend_table_id" {
 }
 
 variable "aft_config_backend_bucket_id" {
+  type = string
+}
+
+variable "aft_config_backend_kms_key_id" {
   type = string
 }
 
